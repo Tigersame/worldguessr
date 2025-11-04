@@ -1,6 +1,5 @@
 import HeadContent from "@/components/headContent";
-import { FaDiscord, FaGithub } from "react-icons/fa";
-import { FaArrowRotateRight, FaGear, FaRankingStar, FaYoutube } from "react-icons/fa6";
+import { FaArrowRotateRight, FaGear, FaRankingStar } from "react-icons/fa6";
 import { signOut, useSession } from "@/components/auth/auth";
 import retryManager from "@/components/utils/retryFetch";
 import 'react-responsive-modal/styles.css';
@@ -52,6 +51,7 @@ import WhatsNewModal from "@/components/ui/WhatsNewModal";
 import MapGuessrModal from "@/components/mapGuessrModal";
 import changelog from "@/components/changelog.json";
 import clientConfig from "@/clientConfig";
+import TokenBalance from "@/components/tokenBalance";
 import { useGoogleLogin } from "@react-oauth/google";
 import haversineDistance from "./utils/haversineDistance";
 import StreetView from "./streetview/streetView";
@@ -2250,16 +2250,31 @@ export default function Home({ }) {
 
 
 
-                {/* ELO/League button */}
-                <div>
-                    {screen === "home" && !mapModal && session && session?.token?.secret && (
-                        <button className="gameBtn leagueBtn" onClick={() => { setAccountModalOpen(true); setAccountModalPage("elo"); }}
-                                               style={{ backgroundColor: eloData?.league?.color }}
-                        >
-                            {!eloData ? '...' : animatedEloDisplay} ELO {eloData?.league?.emoji}
-                        </button>
-                    )}
-                </div>
+                {/* ELO/League button and Token Balance */}
+                {screen === "home" && !mapModal && session && session?.token?.secret && (
+                    <div style={{ 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        gap: '10px', 
+                        flexWrap: 'wrap',
+                        position: 'fixed',
+                        top: width > 830 ? '90px' : '50px',
+                        right: width > 830 ? '20px' : '10px',
+                        zIndex: 1000,
+                        pointerEvents: 'none'
+                    }}>
+                        <div style={{ pointerEvents: 'auto' }}>
+                            <button className="gameBtn leagueBtn" onClick={() => { setAccountModalOpen(true); setAccountModalPage("elo"); }}
+                                                   style={{ backgroundColor: eloData?.league?.color }}
+                            >
+                                {!eloData ? '...' : animatedEloDisplay} ELO {eloData?.league?.emoji}
+                            </button>
+                        </div>
+                        <div style={{ pointerEvents: 'auto' }}>
+                            <TokenBalance session={session} />
+                        </div>
+                    </div>
+                )}
 
                 {screen == "home" &&
                     <div className={`home__content g2_modal ${screen !== "home" ? "hidden" : "cshown"} `}>
@@ -2397,22 +2412,6 @@ export default function Home({ }) {
                             <div className="footer_btns">
                                 {!isApp && !inCoolMathGames && (
                                     <>
-                                        <Link target="_blank" href={"https://discord.gg/ADw47GAyS5"}><button className="g2_hover_effect home__squarebtn gameBtn g2_container discord" aria-label="Discord"><FaDiscord className="home__squarebtnicon" /></button></Link>
-
-                                        {!inCrazyGames && (
-                                            <>
-                                                <Link target="_blank" href={"https://www.youtube.com/@worldguessr?sub_confirmation=1"}><button className="g2_hover_effect home__squarebtn gameBtn g2_container youtube" aria-label="Youtube"><FaYoutube className="home__squarebtnicon" /></button></Link>
-                                                <Link target="_blank" className="desktop" href={"https://www.coolmathgames.com/0-worldguessr"}><button className="g2_hover_effect home__squarebtn gameBtn g2_container_full" aria-label="CoolmathGames">
-                                                    {/* Todo; include coolmath logo here; url is /cmlogo.png*/}
-
-                                                    <NextImage.default src={'/cmlogo.png'} draggable={false} fill alt="Coolmath Games Logo" className="home__squarebtnicon" />
-
-                                                    </button>
-                                                </Link>
-
-                                                <Link target="_blank" href={"https://github.com/codergautam/worldguessr"}><button className="g2_hover_effect home__squarebtn gameBtn g2_container_full" aria-label="Github"><FaGithub className="home__squarebtnicon" /></button></Link>
-                                            </>
-                                        )}
                                         <Link href={"/leaderboard" + (inCrazyGames ? "?crazygames" : "")}>
 
                                             <button className="g2_hover_effect home__squarebtn gameBtn g2_container_full " aria-label="Leaderboard"><FaRankingStar className="home__squarebtnicon" /></button></Link>

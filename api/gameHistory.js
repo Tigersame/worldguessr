@@ -69,6 +69,7 @@ export default async function handler(req, res) {
         userStats: {
           totalPoints: userPlayer?.totalPoints || 0,
           totalXp: userPlayer?.totalXp || 0,
+          totalTokens: userPlayer?.totalTokens || 0,
           averageTimePerRound: userPlayer?.averageTimePerRound || 0,
           finalRank: userPlayer?.finalRank || 1,
           elo: userPlayer?.elo || null

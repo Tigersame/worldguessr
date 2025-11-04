@@ -1,0 +1,3 @@
+PRIVATE_KEY=0x6065576b9f1277658199f51dfd4460d390d76c8d7a98ecd928cd3cd2d54569b2
+BASE_RPC_URL=https://mainnet.base.org
+BASESCAN_API_KEY=your_basescan_api_key_here

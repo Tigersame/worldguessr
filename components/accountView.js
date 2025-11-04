@@ -144,6 +144,11 @@ export default function AccountView({ accountData, supporter, eloData, session }
                 </div>
 
                 <div style={textStyle}>
+                    <span style={{ ...iconStyle, fontSize: '20px' }}>🪙</span>
+                    {accountData.totalTokens || 0} Tokens
+                </div>
+
+                <div style={textStyle}>
                     <FaGamepad style={iconStyle} />
                     {text("gamesPlayed", { games: accountData.gamesLen })}
                 </div>

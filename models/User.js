@@ -22,6 +22,14 @@ const userSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  totalTokens: {
+    type: Number,
+    default: 0,
+  },
+  walletAddress: {
+    type: String,
+    default: null,
+  },
   totalGamesPlayed: {
     type: Number,
     default: 0,

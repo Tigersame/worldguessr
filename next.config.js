@@ -37,12 +37,42 @@ const nextConfig = {
     images: {
         unoptimized: true,
     },
-    output: 'export',
+    // output: 'export', // Commented out for Vercel deployment (needs API routes)
     async rewrites() {
         return [
             {
                 source: '/map/:slug',
                 destination: '/map?s=:slug',
+            },
+        ];
+    },
+    // Generate a stable build ID to prevent cache issues
+    generateBuildId: async () => {
+        // Use commit hash and timestamp for unique build IDs
+        const commitHash = getCommitHash();
+        const timestamp = Date.now();
+        return `${commitHash}-${timestamp}`;
+    },
+    // Add headers to prevent caching of HTML (chunks are hashed so they're safe to cache)
+    async headers() {
+        return [
+            {
+                source: '/:path*',
+                headers: [
+                    {
+                        key: 'Cache-Control',
+                        value: 'public, max-age=0, must-revalidate',
+                    },
+                ],
+            },
+            {
+                source: '/_next/static/:path*',
+                headers: [
+                    {
+                        key: 'Cache-Control',
+                        value: 'public, max-age=31536000, immutable',
+                    },
+                ],
             },
         ];
     },

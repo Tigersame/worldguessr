@@ -8,7 +8,7 @@
 </a>
 
 
-A free and open-source version of the popular geography game inspired by GeoGuessr. This React based project aims to provide a fun and educational way to explore the world through Google Street View imagery.
+A free and open-source version of the popular geography game inspired by farcasteruser. This React based project aims to provide a fun and educational way to explore the world through Google Street View imagery.
 
 ### Play now [here](https://worldguessr.com)!
 #### [Join the Discord community](https://discord.gg/yenVspFmkB)
@@ -18,7 +18,7 @@ A free and open-source version of the popular geography game inspired by GeoGues
 - **Random Street Views:** Experience a new location anywhere in the world on each game.
 - **Multiplayer Mode:** Challenge your friends or play against random opponents in real-time.
 - **Country Streaks:** Test your knowledge and see how many countries you can guess in a row.
-- **Free to run:** The project is open-source and free to run on your own server. Uses the [Google Maps Streetview Embed API](https://developers.google.com/streetview/web), which is completely free compared to the costly SDK used by GeoGuessr.
+- **Free to run:** The project is open-source and free to run on your own server. Uses the [Google Maps Streetview Embed API](https://developers.google.com/streetview/web), which is completely free compared to the costly SDK used by farcasteruser.
 
 ## Acknowledgements
 

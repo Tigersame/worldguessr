@@ -46,6 +46,7 @@ const playerSummarySchema = new mongoose.Schema({
   // Final scores
   totalPoints: { type: Number, required: true },
   totalXp: { type: Number, default: 0 },
+  totalTokens: { type: Number, default: 0 },
   averageTimePerRound: { type: Number, default: 0 }, // seconds
   
   // Ranking

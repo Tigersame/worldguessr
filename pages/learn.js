@@ -32,7 +32,7 @@ React.useEffect(() => {
     <>
     <Head>
       <title>WorldGuessr - Learn Mode</title>
-      <meta name="description" content="Learn Mode - Improve your Geoguessr skills by guessing & learning with community explanations of strategies you could've used to pinpoint each location." />
+      <meta name="description" content="Learn Mode - Improve your farcasteruser skills by guessing & learning with community explanations of strategies you could've used to pinpoint each location." />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <meta name="theme-color" content="#000000" />
       <meta name="robots" content="index, follow" />

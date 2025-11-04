@@ -38,12 +38,34 @@ async function guess(req, res) {
         const totalDuration = rounds.reduce((sum, round) => sum + round.roundTime, 0); // Keep in seconds
         const totalPoints = rounds.reduce((sum, round) => sum + round.points, 0); // Use actual points from rounds
         const totalXp = rounds.reduce((sum, round) => sum + (round.xp || 0), 0);
+        
+        // Calculate token rewards: 1 token per 1000 points (adjustable)
+        // Only award tokens for official maps to prevent abuse
+        const tokensPerRound = rounds.map(round => {
+          if (!official) return 0; // No tokens for community maps
+          return Math.floor(round.points / 1000); // 1 token per 1000 points
+        });
+        const totalTokens = tokensPerRound.reduce((sum, tokens) => sum + tokens, 0);
+
+        // Distribute blockchain tokens if user has wallet address
+        if (totalTokens > 0 && user.walletAddress) {
+          try {
+            const { distributeTokens } = await import('../services/tokenContract.js');
+            await distributeTokens(user.walletAddress, totalPoints);
+            console.log(`[Blockchain] Distributed ${totalTokens} tokens to ${user.walletAddress} for user ${user.username}`);
+          } catch (blockchainError) {
+            console.error('[Blockchain] Error distributing tokens on-chain:', blockchainError);
+            // Don't fail the request if blockchain distribution fails
+            // The in-game tokens are still awarded
+          }
+        }
 
         // Prepare rounds data for Games collection
         let currentRoundStart = gameStartTime.getTime();
         const gameRounds = rounds.map((round, index) => {
           const { lat: guessLat, long: guessLong, actualLat, actualLong, usedHint, maxDist, roundTime, xp, points } = round;
           const actualPoints = points; // Use actual points from frontend
+          const roundTokens = tokensPerRound[index] || 0; // Get tokens for this round
           
           const roundStart = new Date(currentRoundStart);
           const roundEnd = new Date(currentRoundStart + (roundTime * 1000));
@@ -70,6 +92,7 @@ async function guess(req, res) {
               points: actualPoints,
               timeTaken: roundTime,
               xpEarned: xp || 0,
+              tokensEarned: tokensPerRound[index] || 0,
               guessedAt: guessTime,
               usedHint: usedHint || false
             }],
@@ -108,6 +131,7 @@ async function guess(req, res) {
             accountId: user._id,
             totalPoints: totalPoints,
             totalXp: totalXp,
+            totalTokens: totalTokens,
             averageTimePerRound: rounds.reduce((sum, r) => sum + r.roundTime, 0) / rounds.length,
             finalRank: 1,
             elo: {
@@ -134,13 +158,14 @@ async function guess(req, res) {
         // Save the game to Games collection
         await gameDoc.save();
 
-        // Update user's totalGamesPlayed (increment by 1 per game, not per round)
+        // Update user's totalGamesPlayed and tokens (increment by 1 per game, not per round)
         await User.updateOne(
           { secret: user.secret },
           { 
             $inc: { 
               totalGamesPlayed: 1,
-              totalXp: totalXp
+              totalXp: totalXp,
+              totalTokens: totalTokens
             }
           }
         );
@@ -153,8 +178,14 @@ async function guess(req, res) {
           // Don't fail the entire request if stats recording fails
         }
 
-        console.log(`Saved singleplayer game ${gameId} for user ${user.username} with ${totalPoints} points`);
+        console.log(`Saved singleplayer game ${gameId} for user ${user.username} with ${totalPoints} points and ${totalTokens} tokens`);
 
+        // Return tokens earned in response
+        return res.status(200).json({ 
+          success: true, 
+          tokensEarned: totalTokens,
+          totalTokens: (user.totalTokens || 0) + totalTokens
+        });
       } catch (error) {
         console.error('Error saving singleplayer game:', error);
         return res.status(500).json({ error: 'An error occurred', message: error.message });

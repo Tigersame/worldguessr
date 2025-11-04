@@ -8,6 +8,7 @@ import { getLeague, leagues } from "./utils/leagues";
 import { signOut } from "@/components/auth/auth";
 import { useTranslation } from '@/components/useTranslations';
 import FriendsModal from "@/components/friendModal";
+import WalletButton from "@/components/wallet/walletButton";
 
 export default function AccountModal({ session, shown, setAccountModalOpen, eloData, inCrazyGames, friendModal, accountModalPage, setAccountModalPage, ws, sendInvite, canSendInvite, options }) {
     const { t: text } = useTranslation("common");
@@ -102,7 +103,8 @@ export default function AccountModal({ session, shown, setAccountModalOpen, eloD
                         />
 
                         {!inCrazyGames && (
-                            <div className="profile-actions">
+                            <div className="profile-actions" style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '20px' }}>
+                                <WalletButton />
                                 <button
                                     className="logout-button"
                                     onClick={() => signOut()}

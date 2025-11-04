@@ -30,6 +30,7 @@ export default async function handler(req, res) {
     const publicData = {
       username: user.username,
       totalXp: user.totalXp,
+      totalTokens: user.totalTokens || 0,
       createdAt: user.created_at,
       gamesLen: user.totalGamesPlayed || 0,
       canChangeUsername: !user.lastNameChange || Date.now() - lastNameChange > USERNAME_CHANGE_COOLDOWN,

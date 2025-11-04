@@ -109,6 +109,14 @@ export default function GameUI({ inCoolMathGames, miniMapShown, setMiniMapShown,
                   console.error(data.error);
                   return;
                 }
+                // Store tokens earned in the game state
+                if(data.tokensEarned) {
+                  setSinglePlayerRound((prev) => ({
+                    ...prev,
+                    tokensEarned: data.tokensEarned,
+                    totalTokens: data.totalTokens
+                  }));
+                }
               }).catch(e => {
                 console.error(e);
               });
@@ -577,7 +585,13 @@ multiplayerState?.gameData?.players.find(p => p.id !== multiplayerState?.gameDat
 <RoundOverScreen points={singlePlayerRound.locations.reduce((acc, cur) => acc + cur.points, 0)
 
 } maxPoints={25000}
-history={singlePlayerRound.locations}
+history={singlePlayerRound.locations.map((loc, idx) => ({
+  ...loc,
+  // Calculate tokens per round: 1 token per 1000 points, only for official maps
+  tokensEarned: gameOptions?.official !== false ? Math.floor((loc.points || 0) / 1000) : 0
+}))}
+tokensEarned={singlePlayerRound.tokensEarned || 0}
+totalTokens={singlePlayerRound.totalTokens}
 button1Text={"🎮 "+text("playAgain")}
 button1Press={() =>{
   window.crazyMidgame(() =>

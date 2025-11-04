@@ -32,6 +32,7 @@ yarn-error.log*
 
 # local env files
 .env*.local
+.env
 
 # vercel
 .vercel
@@ -39,7 +40,25 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-.env
+
+# public files
 public/wiki
 
+# scripts
 /scripts/*.json
+
+# Smart contract artifacts (should not be committed)
+/contracts/node_modules
+/contracts/artifacts
+/contracts/cache
+/contracts/*.json
+!/contracts/package*.json
+!/contracts/README.md
+!/contracts/DEPLOY*.md
+!/contracts/VERIFY*.md
+!/contracts/TROUBLESHOOTING.md
+!/contracts/BASESCAN*.md
+!/contracts/VERIFICATION*.md
+!/contracts/hardhat.config.cjs
+!/contracts/src/**/*.sol
+/contracts/scripts/*.json

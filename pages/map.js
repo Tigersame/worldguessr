@@ -296,7 +296,7 @@ export default function MapPage({ }) {
           mapData?.name ? `${mapData.name} - WorldGuessr` :
         ""
         }</title>
-        <meta name="description" content={`Explore the world on WorldGuessr, a free GeoGuessr alternative. `} />
+        <meta name="description" content={`Explore the world on WorldGuessr, a free farcasteruser alternative. `} />
         <link rel="icon" type="image/x-icon" href="/icon.ico" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
       </Head>

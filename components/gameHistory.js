@@ -197,6 +197,15 @@ export default function GameHistory({ session, onGameClick }) {
                   </div>
                 )}
 
+                {game.userStats.totalTokens > 0 && (
+                  <div className={styles.statItem}>
+                    <span className={styles.statLabel}>🪙 Tokens</span>
+                    <span className={styles.statValue} style={{ color: '#FFD700', fontWeight: 'bold' }}>
+                      {game.userStats.totalTokens}
+                    </span>
+                  </div>
+                )}
+
                 {game.gameType !== 'ranked_duel' && (
                   <div className={styles.statItem}>
                     <span className={styles.statLabel}>{text('duration')}</span>

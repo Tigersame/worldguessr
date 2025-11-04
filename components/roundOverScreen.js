@@ -71,7 +71,9 @@ const GameSummary = ({
     multiplayerState,
     session,
     gameId,
-    options
+    options,
+    tokensEarned,
+    totalTokens
 }) => {
   const { t: text } = useTranslation("common");
   const [activeRound, setActiveRound] = useState(null); // null = no round selected
@@ -1388,6 +1390,39 @@ const GameSummary = ({
             >
               {text("outOf")} {maxPoints} {text("points")}
             </div>
+            
+            {/* Display total tokens earned for the game */}
+            {tokensEarned && tokensEarned > 0 && session?.token?.secret && (
+              <div
+                style={{
+                  marginTop: '12px',
+                  padding: '12px 16px',
+                  backgroundColor: 'rgba(255, 215, 0, 0.15)',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(255, 215, 0, 0.3)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                  color: '#FFD700',
+                  fontWeight: 'bold',
+                  fontSize: '1.1rem',
+                  transition: 'all 0.3s ease-out',
+                  ...(mobileExpanded && typeof window !== 'undefined' && window.innerWidth <= 1024 ? {
+                    fontSize: '0.95rem',
+                    padding: '8px 12px'
+                  } : {})
+                }}
+              >
+                <span style={{ fontSize: '1.3em' }}>🪙</span>
+                <span>+{tokensEarned} Tokens Earned</span>
+                {totalTokens !== undefined && (
+                  <span style={{ opacity: 0.8, fontSize: '0.9em', marginLeft: '8px' }}>
+                    (Total: {totalTokens})
+                  </span>
+                )}
+              </div>
+            )}
 
             {/* {gameId && (
               <div className="game-id-container" style={{
@@ -1542,6 +1577,18 @@ const GameSummary = ({
                               XP
                             </span>
                             <span className="xp-value">+{round.xpEarned}</span>
+                          </div>
+                        );
+                      })()}
+{(() => {
+                        if (!session?.token?.secret || !round.tokensEarned || round.tokensEarned <= 0) return null;
+                        return (
+                          <div className="detail-row">
+                            <span className="detail-label">
+                              <span className="detail-icon">🪙</span>
+                              Tokens
+                            </span>
+                            <span className="tokens-value" style={{ color: '#FFD700', fontWeight: 'bold' }}>+{round.tokensEarned}</span>
                           </div>
                         );
                       })()}
